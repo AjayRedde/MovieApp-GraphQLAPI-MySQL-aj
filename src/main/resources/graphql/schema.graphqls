@@ -1,0 +1,91 @@
+# Query Type
+type Query {
+    userProfile(id: ID!): UserProfile!
+    movieDetails(id: ID!): MovieDetails
+    moviesByGenre(genre: Genre): [MovieSummary]!
+}
+
+# Mutation Type
+type Mutation {
+    addToWatchList(input: WatchListInput!): WatchlistResponse!
+    updateProfile(input: CustomerInput!): UserProfile
+}
+
+interface Movie {
+    id: ID!
+    title: String!
+    releaseYear: Int!
+    rating: Int!
+    genre: Genre!
+}
+
+type MovieDetails implements Movie {
+    id: ID!
+    title: String!
+    releaseYear: Int!
+    rating: Int!
+    genre: Genre!
+    reviews: [Review]! # Use 'reviews' here instead of 'review' for consistency with the naming
+}
+
+type MovieSummary implements Movie {
+    id: ID!
+    title: String!
+    releaseYear: Int!
+    rating: Int!
+    genre: Genre!
+}
+
+type WatchlistResponse {
+    status: Status!
+    watchList: [MovieSummary]!
+}
+
+type UserProfile {
+    id: ID!
+    name: String!
+    favGenre: Genre!
+    watchList: [MovieSummary]!
+    recomanded: [MovieSummary]!
+}
+
+type Review {
+    id: ID!
+    username: String
+    rating: Int
+    comment: String
+}
+
+# Input for Adding to Watchlist
+input WatchListInput {
+    customerId: Int!
+    movieId: Int!
+}
+
+# Input for Updating Customer Profile
+input CustomerInput {
+    id: ID!
+    name: String
+    favGenre: Genre
+}
+
+# Enum for Movie Genres
+enum Genre {
+    ACTION
+    ADVENTURE
+    ANIMATION
+    BIOGRAPHY
+    COMEDY
+    CRIME
+    DOCUMENTARY
+    DRAMA
+    FANTASY
+    HORROR
+    MYSTERY
+}
+
+# Enum for Status Responses
+enum Status {
+    SUCCESS
+    FAILURE
+}
